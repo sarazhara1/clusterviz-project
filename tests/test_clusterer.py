@@ -56,4 +56,15 @@ class TestClusterer:
         assert len(result['labels']) == len(self.X_blobs)
         # DBSCAN should identify at least 1 cluster
         assert result['n_clusters'] >= 1
+    
+    def test_kmeans_basic(self):
+        """Test basic KMeans functionality."""
+        result = self.clusterer.fit_kmeans(self.X_iris, k=3)
+        
+        assert 'labels' in result
+        assert 'model' in result
+        assert 'params' in result
+        assert 'inertia' in result
+        assert len(result['labels']) == len(self.X_iris)
+        assert result['params']['k'] == 3
 
