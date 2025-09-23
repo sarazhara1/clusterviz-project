@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, KMeans
 from typing import Dict, Any
 
 class Clusterer:
@@ -55,4 +55,27 @@ class Clusterer:
             'n_clusters': n_clusters,
             'n_noise': n_noise
         }
-
+        
+    def fit_kmeans(self, X: np.ndarray, k: int, random_state: int = 42) -> Dict[str, Any]:
+        """
+        Fit KMeans clustering algorithm.
+        
+        Args:
+            X: Input data
+            k (int): Number of clusters
+            random_state (int): Random seed for reproducibility
+            
+        Returns:
+            dict: Results containing labels, model, params, and inertia
+        """
+        model = KMeans(n_clusters=k, random_state=random_state, n_init=10)
+        labels = model.fit_predict(X)
+        
+        return {
+            'labels': labels,
+            'model': model,
+            'params': {'k': k, 'random_state': random_state},
+            'inertia': model.inertia_,
+            'cluster_centers': model.cluster_centers_
+        }
+    
