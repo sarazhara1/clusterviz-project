@@ -1,4 +1,3 @@
-````markdown
 # ClusterViz: Comprehensive Clustering Analysis Toolkit
 
 A polished Python package for clustering analysis that provides multiple clustering algorithms, evaluation metrics, and rich visualizations in a unified, easy-to-use interface.
