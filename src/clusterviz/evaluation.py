@@ -118,7 +118,9 @@ class Evaluator:
                 'N_Noise_Points': list(labels).count(-1) if -1 in labels else 0
             })
         
-        return pd.DataFrame(comparison_data)"""
+        return pd.DataFrame(comparison_data)
+    
+"""
 Clustering evaluation metrics and model selection utilities.
 The Evaluator class provides a consistent interface for model 
 assessment and later integration with clusterers.
