@@ -41,6 +41,7 @@ class TestEvaluator:
         # Davies–Bouldin index should always be >= 0
         assert score >= 0
 
+
     def test_silhouette_score(self):
         """Test silhouette score calculation."""
         score = self.evaluator.silhouette(self.X, self.y_true)
@@ -56,3 +57,5 @@ class TestEvaluator:
         assert 'inertia' in results_df.columns
         assert 'silhouette' in results_df.columns
         assert len(results_df) == 4  # k=2,3,4,5
+
+

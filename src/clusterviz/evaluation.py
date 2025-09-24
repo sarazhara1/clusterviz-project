@@ -121,6 +121,8 @@ class Evaluator:
         return pd.DataFrame(comparison_data)
     
 """
+
+
 Clustering evaluation metrics and model selection utilities.
 The Evaluator class provides a consistent interface for model 
 assessment and later integration with clusterers.
@@ -128,7 +130,11 @@ assessment and later integration with clusterers.
 
 import numpy as np
 import pandas as pd
+
 from sklearn.metrics import  davies_bouldin_score, silhouette_score
+
+from sklearn.metrics import  davies_bouldin_score
+
 from .clusterer import Clusterer
 from typing import List, Dict, Any
 import warnings
@@ -165,6 +171,7 @@ class Evaluator:
             
         return davies_bouldin_score(X, labels)
     
+
     def silhouette(self, X: np.ndarray, labels: np.ndarray) -> float:
         """
         Calculate silhouette score.
@@ -219,7 +226,8 @@ class Evaluator:
             })
         
         return pd.DataFrame(results)
-    
+
+
     
 
 
