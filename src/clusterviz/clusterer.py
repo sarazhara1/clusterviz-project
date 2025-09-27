@@ -1,5 +1,6 @@
 import numpy as np
-from sklearn.cluster import DBSCAN, KMeans
+from sklearn.cluster import DBSCAN, KMeans, AgglomerativeClustering
+from sklearn.mixture import GaussianMixture
 from typing import Dict, Any
 
 class Clusterer:
@@ -78,4 +79,56 @@ class Clusterer:
             'inertia': model.inertia_,
             'cluster_centers': model.cluster_centers_
         }
+    
+    def fit_agglomerative(self, X: np.ndarray, n_clusters: int, 
+                         linkage: str = "ward") -> Dict[str, Any]:
+        """
+        Fit Agglomerative clustering algorithm.
+        
+        Args:
+            X: Input data
+            n_clusters (int): Number of clusters
+            linkage (str): Linkage criterion ('ward', 'complete', 'average', 'single')
+            
+        Returns:
+            dict: Results containing labels, model, and params
+        """
+        model = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+        labels = model.fit_predict(X)
+        
+        return {
+            'labels': labels,
+            'model': model,
+            'params': {'n_clusters': n_clusters, 'linkage': linkage}
+        }
+    
+    def fit_gmm(self, X: np.ndarray, n_components: int, 
+                covariance_type: str = "full", random_state: int = 42) -> Dict[str, Any]:
+        """
+        Fit Gaussian Mixture Model clustering (optional advanced method).
+        
+        Args:
+            X: Input data
+            n_components (int): Number of mixture components
+            covariance_type (str): Type of covariance parameters
+            random_state (int): Random seed for reproducibility
+            
+        Returns:
+            dict: Results containing labels, model, params, and likelihood scores
+        """
+        model = GaussianMixture(n_components=n_components, 
+                               covariance_type=covariance_type,
+                               random_state=random_state)
+        model.fit(X)
+        labels = model.predict(X)
+        
+        return {
+            'labels': labels,
+            'model': model,
+            'params': {'n_components': n_components, 'covariance_type': covariance_type},
+            'aic': model.aic(X),
+            'bic': model.bic(X),
+            'log_likelihood': model.score(X)
+        }
+
     

@@ -8,7 +8,7 @@ assessment and later integration with clusterers.
 import numpy as np
 import pandas as pd
 
-from sklearn.metrics import  davies_bouldin_score, silhouette_score
+from sklearn.metrics import  davies_bouldin_score, silhouette_score, calinski_harabasz_score
 
 from .clusterer import Clusterer
 from typing import List, Dict, Any
@@ -101,6 +101,70 @@ class Evaluator:
             })
         
         return pd.DataFrame(results)
+    
+    def calinski_harabasz(self, X: np.ndarray, labels: np.ndarray) -> float:
+        """
+        Calculate Calinski-Harabasz score (Variance Ratio Criterion).
+        
+        Args:
+            X: Input data
+            labels: Cluster labels
+            
+        Returns:
+            float: Calinski-Harabasz score (higher is better, ≥0)
+        """
+        if len(set(labels)) < 2:
+            warnings.warn("Calinski-Harabasz score requires at least 2 clusters")
+            return 0.0
+            
+        return calinski_harabasz_score(X, labels)
+    
+    
+    def compare_models(self, results: List[Dict[str, Any]], X: np.ndarray) -> pd.DataFrame:
+        """
+        Compare multiple clustering results with all metrics.
+        
+        Args:
+            results: List of clustering result dictionaries
+            X: Original input data
+            
+        Returns:
+            pd.DataFrame: Comparison table with all metrics
+        """
+        comparison_data = []
+        
+        for i, result in enumerate(results):
+            labels = result['labels']
+            
+            # Extract algorithm name and parameters
+            if 'k' in result['params']:
+                algorithm = 'KMeans'
+                param_str = f"k={result['params']['k']}"
+            elif 'eps' in result['params']:
+                algorithm = 'DBSCAN' 
+                param_str = f"eps={result['params']['eps']}, min_samples={result['params']['min_samples']}"
+            elif 'n_clusters' in result['params']:
+                algorithm = 'Agglomerative'
+                param_str = f"n_clusters={result['params']['n_clusters']}, linkage={result['params']['linkage']}"
+            elif 'n_components' in result['params']:
+                algorithm = 'GMM'
+                param_str = f"n_components={result['params']['n_components']}"
+            else:
+                algorithm = 'Unknown'
+                param_str = str(result['params'])
+            
+            # Calculate metrics
+            comparison_data.append({
+                'Algorithm': algorithm,
+                'Parameters': param_str,
+                'N_Clusters': len(set(labels)) - (1 if -1 in labels else 0),
+                'Silhouette': self.silhouette(X, labels),
+                'Davies_Bouldin': self.davies_bouldin(X, labels),
+                'Calinski_Harabasz': self.calinski_harabasz(X, labels),
+                'N_Noise_Points': list(labels).count(-1) if -1 in labels else 0
+            })
+        
+        return pd.DataFrame(comparison_data)
 
 
     

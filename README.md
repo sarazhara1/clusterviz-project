@@ -163,6 +163,7 @@ Each member contributed distinct modules to ensure balanced collaboration:
   * Agglomerative clustering
   * Calinski–Harabasz evaluation
   * Visualizations (dendrograms, cluster plots)
+  * Tutorial notebook (Agglomerative section)
 
 Shared effort on:
 
