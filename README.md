@@ -148,6 +148,7 @@ Each member contributed distinct modules to ensure balanced collaboration:
 
 * **Sara (@sarazhara1)**
 
+  * Dataset loaders
   * DBSCAN implementation
   * Davies–Bouldin score evaluation
   * Tutorial notebook (DBSCAN section)
@@ -168,7 +169,6 @@ Each member contributed distinct modules to ensure balanced collaboration:
 Shared effort on:
 
 * Preprocessing utilities
-* Dataset loaders
 * Overall integration & testing
 
 ---
